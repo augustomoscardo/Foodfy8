@@ -1,0 +1,38 @@
+{% set pageName = "chefs" %}
+{% extends "site/layout.njk" %}
+
+{% block head %}
+    
+    <title>Foodfy - Chefs</title>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="chefs">
+        {% for chef in chefs %}    
+            <div class="chef" id="{{chef.id}}">
+                <div class="chef_avatar">
+                    <img src="{{chef.image}}" alt="Imagem de {{chef.name}}">
+                </div>
+                <div class="chef_content">
+                    <div class="chef_name">
+                        <p>{{chef.name}}</p>
+                    </div>
+                    <div class="chef-total_recipes">
+                        {% if chef.count == 0 %}
+                            <p>Não há receitas</p>
+                        {% elseif chef.count == 1 %}
+                            <p>{{chef.count}} receita</p>
+                        {% else %}
+                            <p>{{chef.count}} receitas</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
+
+

@@ -1,0 +1,73 @@
+{% set pageName = "chefs" %}
+{% extends "admin/layout.njk" %}
+
+{% block head %}
+    
+    <title>Foodfy - Chef {{chef.name}}</title>
+
+{% endblock %}
+
+
+{% block content %} 
+
+<section id="chef">
+                   
+    <div class="container" id="{{chef.id}}">
+        <div class="page-header">
+            <h2>Chef: {{chef.name}}</h2>
+            <a href="/admin/chefs/{{chef.id}}/edit" class="btn">Editar Chef</a>
+        </div>
+        
+
+        <div class="chef-header">
+            <div class="chef-avatar_url">
+                {% if not files[0] %}
+                    <p>Chef não possui Avatar</p>
+                {% else %}
+                    <img src="{{files[0].src}}" alt="Imagem de {{chef.name}}">
+                {% endif %}
+            </div>
+            <div class="chef-name">
+                <h1>{{chef.name}}</h1>
+            </div>
+            <div class="chef-total_recipes">
+                {% if chef.total_recipes == 0 %}
+                    <p>Não há receitas</p>
+                {% elseif chef.total_recipes == 1 %}
+                    <p>{{chef.total_recipes}} receita</p>
+                {% else %}
+                    <p>{{chef.total_recipes}} receitas</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="chef-recipes">
+            <div class= "topic">
+                <h2>Receitas</h2>
+            </div>
+            <div class="cards">
+                {% for recipe in chefRecipes %}    
+                    <div class="card" id="{{recipe.id}}">
+                        <div class="card_image">
+                            <img src="{{recipe.image}}" alt="Imagem de {{recipe.title}}">
+                        </div>
+                        <div class="card_content">
+                            <div class="card_title">
+                                <p>{{recipe.title}}</p>
+                            </div>
+                            <div class="card_chef">
+                                <p>por {{chef.name}}</p>
+                            </div>
+                            <a href="/admin/recipes/{{recipe.id}}">Visualizar</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>     
+        </div>
+
+    </div>
+
+</section>
+
+
+{% endblock %}
