@@ -154,7 +154,6 @@
 #recipe .recipe-image .gallery-preview {
     display: flex;
     justify-content: flex-end;
-    
 }
 
 #recipe .recipe-image .gallery-preview img {

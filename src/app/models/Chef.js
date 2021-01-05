@@ -52,8 +52,6 @@ module.exports = {
     },
     update(data) {
 
-        console.log(data);
-
         const query = `
             UPDATE chefs SET
                 name=$1,
@@ -71,9 +69,10 @@ module.exports = {
     },
     delete(id) {
         try {
+            
             return db.query(`DELETE FROM chefs WHERE id = $1`, [id])
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     },
     totalRecipesOfChef() {

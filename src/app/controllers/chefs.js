@@ -22,17 +22,6 @@ module.exports = {
                     image: `${req.protocol}://${req.headers.host}${image.replace("public", "")}`
                 }
             }))
-            // console.log(chefWithImage);
-
-            // const chefsFilesPromise = await Promise.all(chefs.map(chef => File.find(chef.file_id)))
-            // // console.log(chefsFilesPromise);
-            // let files = chefsFilesPromise.map(result => result.rows[0])
-            // files = files.map(file => ({
-            //     ...file,
-            //     src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-            // }))
-            // console.log(files);
-
             return res.render('admin/chefs/index', { chefs: chefWithImage })
 
         } catch (error) {
@@ -167,16 +156,24 @@ module.exports = {
             // remove photo from db
             if (req.body.removed_files) {
                 // 1,
-                const removedFiles = req.body.removed_files.split(",") //[1,]
+                const removedFiles = req.body.removed_files.split(",") // [1,]
 
                 const lastIndex = removedFiles.length - 1
 
                 removedFiles.splice(lastIndex, 1) // [1]
 
+                console.log(removedFiles);
+
                 const removedFilesPromise = removedFiles.map(id => File.delete(id))
 
                 await Promise.all(removedFilesPromise)
             }
+
+            console.log({
+                name: req.body.name,
+                file_id: newFiles[0].rows[0].id,
+                id: req.body.id
+            })
 
             await Chef.update({
                 name: req.body.name,
@@ -203,6 +200,8 @@ module.exports = {
             } else {
                 
                 await Chef.delete(req.body.id)
+
+                await File.delete(chef.file_id)
 
                 return res.redirect(`/admin/chefs`)
             }

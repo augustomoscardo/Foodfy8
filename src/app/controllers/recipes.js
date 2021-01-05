@@ -98,13 +98,11 @@ module.exports = {
                 ...file,
                 src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
             }))
-console.log(recipeFiles);
             return res.render('admin/recipes/show', { recipe, recipeFiles })
 
         } catch (error) {
             console.log(error)
         }
-
     },
     async edit(req, res) {
 
@@ -165,9 +163,9 @@ console.log(recipeFiles);
 
                 removedFiles.splice(lastIndex, 1) // [1,2,3]
 
-                const removeRecipeFilePromise = removedFiles.map(id => RecipeFile.delete(id))
+                const removeRecipeFilePromise = removedFiles.map(id => RecipeFile.deleteFileId(id))
+
                 await Promise.all(removeRecipeFilePromise)
-                console.log(removeRecipeFilePromise);
 
                 const removedFilesPromise = removedFiles.map(id => File.delete(id))
                 await Promise.all(removedFilesPromise)
@@ -184,7 +182,23 @@ console.log(recipeFiles);
     async delete(req, res) {
 
         try {
-            await Recipe.delete(req.body.id)
+            const recipeFiles = await RecipeFile.findRecipeId(req.body.id)
+            console.log(recipeFiles.rows);
+            await Promise.all(recipeFiles.rows.map(recipeFile => {
+                console.log(recipeFile)
+                 RecipeFile.delete(recipeFile.id)
+            }))
+            await Promise.all(recipeFiles.rows.map(async recipeFile => {
+                await Recipe.delete(recipeFile.recipe_id)
+                await File.delete(recipeFile.file_id)
+            }))
+
+            //await RecipeFile.delete(req.body.id)
+            
+            //await Recipe.delete(req.body.id)
+            
+           //await File.delete(req.body.id)
+            
 
             return res.redirect(`/admin/recipes`)
 

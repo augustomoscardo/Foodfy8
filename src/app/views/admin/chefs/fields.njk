@@ -15,8 +15,8 @@
         <div id="avatar-preview">
             {% if files %}
                 <input value="{{files[0].src}}" disabled>
-                <div class="avatar-image" id="{{files.id}}">
-                    <img src="{{files[0].src}}" alt="{{files.name}}"> {# OU colocar image.src e image.name #}
+                <div class="avatar-image" id="{{files[0].id}}">
+                    <img src="{{files[0].src}}" alt="{{files[0].name}}"> {# OU colocar image.src e image.name #}
                     <i 
                         class="material-icons"
                         onclick="AvatarUpload.removeOldImage(event)"
